@@ -80,8 +80,23 @@ export default function Itenary() {
   const [loading, setLoading] = useState(false);
   const [itenary, setItenary] = useState<Itinerary | null>(null);
 
-  const getData = async () => {
-    fetch("http://127.0.0.1:8000/testMessage")
+//   const getData = async () => {
+//     fetch("http://127.0.0.1:8000/sendMessage")
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Network response was not ok");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         if (data != "") setItenary(data);
+//       })
+//       .catch((error) => console.log(error));
+//     setLoading(false);
+//   };
+
+const getData = async () => {
+    fetch("http://127.0.0.1:8000/getMessage")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -95,9 +110,14 @@ export default function Itenary() {
     setLoading(false);
   };
 
+
   useEffect(() => {
     setLoading(true);
-    getData();
+    const timeoutId = setTimeout(() => {
+        getData();
+        setLoading(false);
+      }, 120000);
+      return () => clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {

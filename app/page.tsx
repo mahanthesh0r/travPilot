@@ -17,19 +17,25 @@ interface DateValue {
   endDate: number; // since setMonth returns a number
 }
 
+let initialValues = {
+  fromCity: '',
+  toCity: '',
+  budget: ''
+}
+
+
+
 export default function SparklesPreview() {
   const [value, setValue] = useState<DateValue>({
     startDate: new Date(),
     endDate: new Date().setMonth(11),
   });
 
-  const handleValueChange = (newValue: DateValue) => {
-    console.log('newValue:', newValue);
-    setValue(newValue);
-  };
 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const [inputs, setInputs] = useState(initialValues)
 
   const words = [
     {
@@ -83,14 +89,32 @@ export default function SparklesPreview() {
 
 
   const handleClick = () => {
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      router.push('/itenary');
-    }, 12000);
+    getData()
+    window.location.href ="/itenary"
+    //router.push('/itenary');
+  };
+
+  const onChangeInput = (e) => {
+    setInputs({...inputs, [e.target.name]: e.target.value});
+    console.log(inputs)
   };
 
 
+  const handleValueChange = (newValue: DateValue) => {
+    console.log('newValue:', newValue);
+    setValue(newValue);
+    console.log(newValue.startDate)
+  };
+
+  const getData = async () => {
+    fetch("http://127.0.0.1:8000/sendMessage?budget=" + inputs.budget + "&from_city=" + inputs.fromCity + "&to_city=" + inputs.toCity + "&start_date=" + value.startDate + "&end_date=" + value.endDate)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.status
+      })
+  };
 
 
   return (
@@ -102,22 +126,25 @@ export default function SparklesPreview() {
       </WavyBackground>
       <div className=" relative w-screen px-20 pb-[5rem] grid grid-cols-2 gap-3">
         <div>
-        <Label htmlFor="firstname">From</Label>
-            <Input id="firstname" placeholder="Country, City" type="text" />
+        <Label htmlFor="from">From</Label>
+            <Input name="fromCity" id="fromCity" value={ inputs.fromCity || "" } onChange={ onChangeInput } placeholder="Country, City" type="text" />
         </div>
         <div>
-        <Label htmlFor="firstname">To</Label>
-            <Input id="firstname" placeholder="Country, City" type="text" />
+        <Label htmlFor="to">To</Label>
+            <Input name="toCity" id="toCity" value={ inputs.toCity || "" }  onChange={ onChangeInput } placeholder="Country, City" type="text" />
         </div>
         <div>
-        <Label htmlFor="firstname">Budget</Label>
-            <Input id="firstname" placeholder="$2000" type="number" />
+        <Label htmlFor="budget">Budget</Label>
+            <Input name="budget" id="budget" value={ inputs.budget || "" } onChange={ onChangeInput } placeholder="$2000" type="number" />
         </div>
         <div className="">
           <h1>Date</h1>
         <Datepicker
       value={value}
       onChange={handleValueChange}
+      displayFormat={"DD/MM/YYYY"} 
+      startFrom={"04/04/2024"}
+      
     />
         </div>
       </div>
