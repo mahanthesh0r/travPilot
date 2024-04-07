@@ -1,5 +1,5 @@
 "use client";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -7,399 +7,55 @@ import { twMerge } from "tailwind-merge";
 import { TracingBeam } from "../components/ui/tracing-beam";
 import { MultiStepLoader as Loader } from "../components/ui/multi-step-loader";
 import { IconSquareRoundedX } from "@tabler/icons-react";
+import { useScroll, useTransform } from "framer-motion";
+import { GoogleGeminiEffect } from "../components/ui/gemini-effect";
 
 // const World = dynamic(() => import("../../app/components/ui/globe").then((m) => m.World), {
 //   ssr: false,
 // });
 
+interface DayActivity {
+  name: string;
+  address: string;
+  URL: string;
+}
+
+interface Day {
+  breakfast: DayActivity;
+  entertainment1: DayActivity;
+  lunch: DayActivity;
+  entertainment2: DayActivity;
+  dinner: DayActivity;
+  entertainment3: DayActivity;
+}
+
+interface Itinerary {
+  flight: {
+    flightUrl: string;
+    flightPrice: number;
+    flightArrivalTime: string;
+  };
+  hotel: {
+    hotelAddress: string;
+    hotelName: string;
+    hotelURL: string;
+  };
+  days: Day[];
+}
+
 export default function Itenary() {
-//   const globeConfig = {
-//     pointSize: 4,
-//     globeColor: "#062056",
-//     showAtmosphere: true,
-//     atmosphereColor: "#FFFFFF",
-//     atmosphereAltitude: 0.1,
-//     emissive: "#062056",
-//     emissiveIntensity: 0.1,
-//     shininess: 0.9,
-//     polygonColor: "rgba(255,255,255,0.7)",
-//     ambientLight: "#38bdf8",
-//     directionalLeftLight: "#ffffff",
-//     directionalTopLight: "#ffffff",
-//     pointLight: "#ffffff",
-//     arcTime: 1000,
-//     arcLength: 0.9,
-//     rings: 1,
-//     maxRings: 3,
-//     initialPosition: { lat: 22.3193, lng: 114.1694 },
-//     autoRotate: true,
-//     autoRotateSpeed: 0.5,
-//   };
-//   const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
-//   const sampleArcs = [
-//     {
-//       order: 1,
-//       startLat: -19.885592,
-//       startLng: -43.951191,
-//       endLat: -22.9068,
-//       endLng: -43.1729,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 1,
-//       startLat: 28.6139,
-//       startLng: 77.209,
-//       endLat: 3.139,
-//       endLng: 101.6869,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 1,
-//       startLat: -19.885592,
-//       startLng: -43.951191,
-//       endLat: -1.303396,
-//       endLng: 36.852443,
-//       arcAlt: 0.5,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 2,
-//       startLat: 1.3521,
-//       startLng: 103.8198,
-//       endLat: 35.6762,
-//       endLng: 139.6503,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 2,
-//       startLat: 51.5072,
-//       startLng: -0.1276,
-//       endLat: 3.139,
-//       endLng: 101.6869,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 2,
-//       startLat: -15.785493,
-//       startLng: -47.909029,
-//       endLat: 36.162809,
-//       endLng: -115.119411,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 3,
-//       startLat: -33.8688,
-//       startLng: 151.2093,
-//       endLat: 22.3193,
-//       endLng: 114.1694,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 3,
-//       startLat: 21.3099,
-//       startLng: -157.8581,
-//       endLat: 40.7128,
-//       endLng: -74.006,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 3,
-//       startLat: -6.2088,
-//       startLng: 106.8456,
-//       endLat: 51.5072,
-//       endLng: -0.1276,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 4,
-//       startLat: 11.986597,
-//       startLng: 8.571831,
-//       endLat: -15.595412,
-//       endLng: -56.05918,
-//       arcAlt: 0.5,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 4,
-//       startLat: -34.6037,
-//       startLng: -58.3816,
-//       endLat: 22.3193,
-//       endLng: 114.1694,
-//       arcAlt: 0.7,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 4,
-//       startLat: 51.5072,
-//       startLng: -0.1276,
-//       endLat: 48.8566,
-//       endLng: -2.3522,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 5,
-//       startLat: 14.5995,
-//       startLng: 120.9842,
-//       endLat: 51.5072,
-//       endLng: -0.1276,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 5,
-//       startLat: 1.3521,
-//       startLng: 103.8198,
-//       endLat: -33.8688,
-//       endLng: 151.2093,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 5,
-//       startLat: 34.0522,
-//       startLng: -118.2437,
-//       endLat: 48.8566,
-//       endLng: -2.3522,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 6,
-//       startLat: -15.432563,
-//       startLng: 28.315853,
-//       endLat: 1.094136,
-//       endLng: -63.34546,
-//       arcAlt: 0.7,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 6,
-//       startLat: 37.5665,
-//       startLng: 126.978,
-//       endLat: 35.6762,
-//       endLng: 139.6503,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 6,
-//       startLat: 22.3193,
-//       startLng: 114.1694,
-//       endLat: 51.5072,
-//       endLng: -0.1276,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 7,
-//       startLat: -19.885592,
-//       startLng: -43.951191,
-//       endLat: -15.595412,
-//       endLng: -56.05918,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 7,
-//       startLat: 48.8566,
-//       startLng: -2.3522,
-//       endLat: 52.52,
-//       endLng: 13.405,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 7,
-//       startLat: 52.52,
-//       startLng: 13.405,
-//       endLat: 34.0522,
-//       endLng: -118.2437,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 8,
-//       startLat: -8.833221,
-//       startLng: 13.264837,
-//       endLat: -33.936138,
-//       endLng: 18.436529,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 8,
-//       startLat: 49.2827,
-//       startLng: -123.1207,
-//       endLat: 52.3676,
-//       endLng: 4.9041,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 8,
-//       startLat: 1.3521,
-//       startLng: 103.8198,
-//       endLat: 40.7128,
-//       endLng: -74.006,
-//       arcAlt: 0.5,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 9,
-//       startLat: 51.5072,
-//       startLng: -0.1276,
-//       endLat: 34.0522,
-//       endLng: -118.2437,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 9,
-//       startLat: 22.3193,
-//       startLng: 114.1694,
-//       endLat: -22.9068,
-//       endLng: -43.1729,
-//       arcAlt: 0.7,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 9,
-//       startLat: 1.3521,
-//       startLng: 103.8198,
-//       endLat: -34.6037,
-//       endLng: -58.3816,
-//       arcAlt: 0.5,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 10,
-//       startLat: -22.9068,
-//       startLng: -43.1729,
-//       endLat: 28.6139,
-//       endLng: 77.209,
-//       arcAlt: 0.7,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 10,
-//       startLat: 34.0522,
-//       startLng: -118.2437,
-//       endLat: 31.2304,
-//       endLng: 121.4737,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 10,
-//       startLat: -6.2088,
-//       startLng: 106.8456,
-//       endLat: 52.3676,
-//       endLng: 4.9041,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 11,
-//       startLat: 41.9028,
-//       startLng: 12.4964,
-//       endLat: 34.0522,
-//       endLng: -118.2437,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 11,
-//       startLat: -6.2088,
-//       startLng: 106.8456,
-//       endLat: 31.2304,
-//       endLng: 121.4737,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 11,
-//       startLat: 22.3193,
-//       startLng: 114.1694,
-//       endLat: 1.3521,
-//       endLng: 103.8198,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 12,
-//       startLat: 34.0522,
-//       startLng: -118.2437,
-//       endLat: 37.7749,
-//       endLng: -122.4194,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 12,
-//       startLat: 35.6762,
-//       startLng: 139.6503,
-//       endLat: 22.3193,
-//       endLng: 114.1694,
-//       arcAlt: 0.2,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 12,
-//       startLat: 22.3193,
-//       startLng: 114.1694,
-//       endLat: 34.0522,
-//       endLng: -118.2437,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 13,
-//       startLat: 52.52,
-//       startLng: 13.405,
-//       endLat: 22.3193,
-//       endLng: 114.1694,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 13,
-//       startLat: 11.986597,
-//       startLng: 8.571831,
-//       endLat: 35.6762,
-//       endLng: 139.6503,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 13,
-//       startLat: -22.9068,
-//       startLng: -43.1729,
-//       endLat: -34.6037,
-//       endLng: -58.3816,
-//       arcAlt: 0.1,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//     {
-//       order: 14,
-//       startLat: -33.936138,
-//       startLng: 18.436529,
-//       endLat: 21.395643,
-//       endLng: 39.883798,
-//       arcAlt: 0.3,
-//       color: colors[Math.floor(Math.random() * (colors.length - 1))],
-//     },
-//   ];
+  const ref = React.useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const pathLengthFirst = useTransform(scrollYProgress, [0, 0.8], [0.2, 1.2]);
+  const pathLengthSecond = useTransform(scrollYProgress, [0, 0.8], [0.15, 1.2]);
+  const pathLengthThird = useTransform(scrollYProgress, [0, 0.8], [0.1, 1.2]);
+  const pathLengthFourth = useTransform(scrollYProgress, [0, 0.8], [0.05, 1.2]);
+  const pathLengthFifth = useTransform(scrollYProgress, [0, 0.8], [0, 1.2]);
 
-
+  
   const loadingStates = [
     {
       text: "Looking for best flights",
@@ -421,101 +77,66 @@ export default function Itenary() {
     },
   ];
 
-
   const [loading, setLoading] = useState(false);
+  const [itenary, setItenary] = useState<Itinerary | null>(null);
+
+  const getData = async () => {
+    fetch("http://127.0.0.1:8000/testMessage")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data != "") setItenary(data);
+      })
+      .catch((error) => console.log(error));
+    setLoading(false);
+  };
 
   useEffect(() => {
-    setLoading(true)
-    const getData = async () => {
-        const query = await fetch('http://127.0.0.1:8000/sendMessage');
-        const res = await query.json();
-        setLoading(false)
-        console.log(res)
-    }
-    getData()
-  },[]);
+    setLoading(true);
+    getData();
+  }, []);
 
-  const dummyContent = [
-    {
-      title: "Lorem Ipsum Dolor Sit Amet",
-      description: (
-        <>
-          <p>
-            Sit duis est minim proident non nisi velit non consectetur. Esse
-            adipisicing laboris consectetur enim ipsum reprehenderit eu deserunt
-            Lorem ut aliqua anim do. Duis cupidatat qui irure cupidatat incididunt
-            incididunt enim magna id est qui sunt fugiat. Laboris do duis pariatur
-            fugiat Lorem aute sit ullamco. Qui deserunt non reprehenderit dolore
-            nisi velit exercitation Lorem qui do enim culpa. Aliqua eiusmod in
-            occaecat reprehenderit laborum nostrud fugiat voluptate do Lorem culpa
-            officia sint labore. Tempor consectetur excepteur ut fugiat veniam
-            commodo et labore dolore commodo pariatur.
-          </p>
-          <p>
-            Dolor minim irure ut Lorem proident. Ipsum do pariatur est ad ad
-            veniam in commodo id reprehenderit adipisicing. Proident duis
-            exercitation ad quis ex cupidatat cupidatat occaecat adipisicing.
-          </p>
-          <p>
-            Tempor quis dolor veniam quis dolor. Sit reprehenderit eiusmod
-            reprehenderit deserunt amet laborum consequat adipisicing officia qui
-            irure id sint adipisicing. Adipisicing fugiat aliqua nulla nostrud.
-            Amet culpa officia aliquip deserunt veniam deserunt officia
-            adipisicing aliquip proident officia sunt.
-          </p>
-        </>
-      ),
-      badge: "React",
-      image:
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "Lorem Ipsum Dolor Sit Amet",
-      description: (
-        <>
-          <p>
-            Ex irure dolore veniam ex velit non aute nisi labore ipsum occaecat
-            deserunt cupidatat aute. Enim cillum dolor et nulla sunt exercitation
-            non voluptate qui aliquip esse tempor. Ullamco ut sunt consectetur
-            sint qui qui do do qui do. Labore laborum culpa magna reprehenderit ea
-            velit id esse adipisicing deserunt amet dolore. Ipsum occaecat veniam
-            commodo proident aliqua id ad deserunt dolor aliquip duis veniam sunt.
-          </p>
-          <p>
-            In dolore veniam excepteur eu est et sunt velit. Ipsum sint esse
-            veniam fugiat esse qui sint ad sunt reprehenderit do qui proident
-            reprehenderit. Laborum exercitation aliqua reprehenderit ea sint
-            cillum ut mollit.
-          </p>
-        </>
-      ),
-      badge: "Changelog",
-      image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      title: "Lorem Ipsum Dolor Sit Amet",
-      description: (
-        <>
-          <p>
-            Ex irure dolore veniam ex velit non aute nisi labore ipsum occaecat
-            deserunt cupidatat aute. Enim cillum dolor et nulla sunt exercitation
-            non voluptate qui aliquip esse tempor. Ullamco ut sunt consectetur
-            sint qui qui do do qui do. Labore laborum culpa magna reprehenderit ea
-            velit id esse adipisicing deserunt amet dolore. Ipsum occaecat veniam
-            commodo proident aliqua id ad deserunt dolor aliquip duis veniam sunt.
-          </p>
-        </>
-      ),
-      badge: "Launch Week",
-      image:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&q=80&w=3506&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
+  useEffect(() => {
+    if (itenary != null) {
+      setLoading(false);
+      console.log(loading);
+      console.log(itenary);
+    }
+  }, [itenary]);
+
+  
+
+  if (!itenary) {
+    return (
+      <Loader
+        loadingStates={loadingStates}
+        loading={loading}
+        duration={2000}
+        loop={true}
+      />
+    );
+  }
 
   return (
     <div className="grid grid-flow-row">
-        <Loader loadingStates={loadingStates} loading={loading} duration={2000} loop={true}/>
+      <div
+        className="h-[400vh] bg-black w-full dark:border dark:border-white/[0.1] rounded-md relative pt-40 overflow-clip"
+        ref={ref}
+      >
+        <GoogleGeminiEffect
+          pathLengths={[
+            pathLengthFirst,
+            pathLengthSecond,
+            pathLengthThird,
+            pathLengthFourth,
+            pathLengthFifth,
+          ]}
+        />
+      </div>
       {/* <div className="mt-20 max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
         <motion.div
           initial={{
@@ -544,36 +165,154 @@ export default function Itenary() {
         </div>
       </div> */}
 
-
       <TracingBeam className="px-6">
-      <div className="max-w-2xl mx-auto antialiased pt-4 relative">
-        {dummyContent.map((item, index) => (
-          <div key={`content-${index}`} className="mb-10">
-            <h2 className="bg-black text-white rounded-full text-sm w-fit px-4 py-1 mb-4">
-              {item.badge}
-            </h2>
- 
-            <p className={twMerge("text-xl mb-4")}>
-              {item.title}
-            </p>
- 
-            <div className="text-sm  prose prose-sm dark:prose-invert">
-              {item?.image && (
-                <Image
-                  src={item.image}
-                  alt="blog thumbnail"
-                  height="1000"
-                  width="1000"
-                  className="rounded-lg mb-10 object-cover"
-                />
-              )}
-              {item.description}
+        <div className="max-w-2xl mx-auto antialiased pt-4 relative">
+          <h1 className="p-5 text-4xl font-black text-gray-900 dark:text-white">
+            Flight Information
+          </h1>
+          <p className="text-xl font-medium text-gray-900 dark:text-white">
+            {" "}
+            <strong>Price: </strong>
+          </p>
+          <p className="text-xl text-gray-900 font-extralight dark:text-green-500">
+            ${itenary.flight.flightPrice}
+          </p>
+
+          <p className="pt-5 text-xl font-medium text-gray-900 dark:text-white">
+            {" "}
+            <strong>flightArrivalTim: </strong>
+          </p>
+          <p className="pb-5 text-xl text-gray-900 font-extralight dark:text-white">
+            {itenary.flight.flightArrivalTime}
+          </p>
+
+          <a
+            href={itenary.flight.flightUrl}
+            target="_blank"
+            className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Book Flight
+          </a>
+
+          <h1 className="p-5 text-4xl font-black text-gray-900 dark:text-white">
+            Hotel Information
+          </h1>
+
+          <p className="text-xl font-medium text-gray-900 dark:text-white">
+            {" "}
+            <strong>Name: </strong>
+          </p>
+          <p className="text-xl text-gray-900 font-extralight dark:text-white ">
+            {itenary.hotel.hotelName}
+          </p>
+
+          <p className="pt-5 text-xl font-medium text-gray-900 dark:text-white">
+            {" "}
+            <strong>Address: </strong>
+          </p>
+          <p className="pb-5 text-xl text-gray-900 font-extralight dark:text-white">
+            {itenary.hotel.hotelAddress}
+          </p>
+
+          <a
+            href={itenary.hotel.hotelURL}
+            target="_blank"
+            className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Book Hotel
+          </a>
+
+          <h1 className="pt-5 text-4xl font-black text-gray-900 dark:text-white">
+            Daily Itenary
+          </h1>
+          {itenary.days.map((day, index) => (
+            <div key={index}>
+              <h3 className="pt-10 pb-2 text-3xl font-extrabold text-gray-900 dark:text-white">
+                <strong>Day {index + 1}</strong>
+              </h3>
+              <div>
+                <p className="text-xl font-medium text-gray-900 dark:text-white">
+                  {" "}
+                  <strong>Breakfast: </strong>
+                </p>
+                <p className="text-xl font-extralight text-blue-600 underline dark:text-blue-500 hover:no-underline">
+                 <a href={day.breakfast.URL} target="_blank">{day.breakfast.name}</a> 
+                </p>
+                <p className="pb-5 text-sm text-gray-900 font-extralight dark:text-white">
+                  {day.breakfast.address}
+                </p>
+
+              </div>
+              <div>
+              <p className="pt-2 text-xl font-medium text-gray-900 dark:text-white">
+                  {" "}
+                  <strong>Entertainment: </strong>
+                </p>
+                <p className="text-xl font-extralight text-blue-600 underline dark:text-blue-500 hover:no-underline">
+                 <a href={day.entertainment1.URL} target="_blank">{day.entertainment1.name}</a> 
+                </p>
+                <p className="pb-5 text-sm text-gray-900 font-extralight dark:text-white">
+                  {day.entertainment1.address}
+                </p>
+
+                </div>
+
+                <div>
+                <p className="pt-2 text-xl font-medium text-gray-900 dark:text-white">
+                  {" "}
+                  <strong>Lunch: </strong>
+                </p>
+                <p className="text-xl font-extralight text-blue-600 underline dark:text-blue-500 hover:no-underline">
+                 <a href={day.lunch.URL} target="_blank">{day.lunch.name}</a> 
+                </p>
+                <p className="pb-5 text-sm text-gray-900 font-extralight dark:text-white">
+                  {day.lunch.address}
+                </p>
+              </div>
+
+              <div>
+                <p className="pt-2 text-xl font-medium text-gray-900 dark:text-white">
+                  {" "}
+                  <strong>Entertainment: </strong>
+                </p>
+                <p className="text-xl font-extralight text-blue-600 underline dark:text-blue-500 hover:no-underline">
+                 <a href={day.entertainment2.URL} target="_blank">{day.entertainment2.name}</a> 
+                </p>
+                <p className="pb-5 text-sm text-gray-900 font-extralight dark:text-white">
+                  {day.entertainment2.address}
+                </p>
+              </div>
+
+
+              <div>
+                <p className="pt-2 text-xl font-medium text-gray-900 dark:text-white">
+                  {" "}
+                  <strong>Dinner: </strong>
+                </p>
+                <p className="text-xl font-extralight text-blue-600 underline dark:text-blue-500 hover:no-underline">
+                 <a href={day.dinner.URL} target="_blank">{day.dinner.name}</a> 
+                </p>
+                <p className="pb-5 text-sm text-gray-900 font-extralight dark:text-white">
+                  {day.dinner.address}
+                </p>
+              </div>
+
+              <div>
+                <p className="pt-5 text-xl font-medium text-gray-900 dark:text-white">
+                  {" "}
+                  <strong>Entertainment: </strong>
+                </p>
+                <p className="text-xl font-extralight text-blue-600 underline dark:text-blue-500 hover:no-underline">
+                 <a href={day.entertainment3.URL} target="_blank">{day.entertainment3.name}</a> 
+                </p>
+                <p className="pb-5 text-sm text-gray-900 font-extralight dark:text-white">
+                  {day.entertainment3.address}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </TracingBeam>
-      
+          ))}
+        </div>
+      </TracingBeam>
     </div>
   );
 }
