@@ -9,6 +9,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 
+
 import { IconSquareRoundedX } from "@tabler/icons-react";
 
 
@@ -89,7 +90,7 @@ export default function SparklesPreview() {
 
 
   const handleClick = () => {
-    getData()
+   // sendData()
     window.location.href ="/itenary"
     //router.push('/itenary');
   };
@@ -115,6 +116,8 @@ export default function SparklesPreview() {
         return response.status
       })
   };
+
+
 
 
   return (

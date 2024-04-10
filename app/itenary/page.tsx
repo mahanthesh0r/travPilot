@@ -9,6 +9,7 @@ import { MultiStepLoader as Loader } from "../components/ui/multi-step-loader";
 import { IconSquareRoundedX } from "@tabler/icons-react";
 import { useScroll, useTransform } from "framer-motion";
 import { GoogleGeminiEffect } from "../components/ui/gemini-effect";
+import dummyJson from '../../data/dummy.json'
 
 // const World = dynamic(() => import("../../app/components/ui/globe").then((m) => m.World), {
 //   ssr: false,
@@ -110,13 +111,34 @@ const getData = async () => {
     setLoading(false);
   };
 
+  const getDataFromFile = () => {
+    // fetch("../../data/dummy.json")
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error("Network response was not ok");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     if (data != "") setItenary(data);
+    //   })
+    //   .catch((error) => console.log(error));
+
+    setItenary(dummyJson)
+    console.log(dummyJson)
+  };
+  
+
 
   useEffect(() => {
     setLoading(true);
     const timeoutId = setTimeout(() => {
-        getData();
+        //getData();
+        //getDataFromFile
+        setItenary(dummyJson)
+        //console.log(itenary)
         setLoading(false);
-      }, 120000);
+      }, 12000);
       return () => clearTimeout(timeoutId);
   }, []);
 
