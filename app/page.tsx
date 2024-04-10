@@ -95,7 +95,7 @@ export default function SparklesPreview() {
     //router.push('/itenary');
   };
 
-  const onChangeInput = (e) => {
+  const onChangeInput = (e: React.ChangeEvent<any>) => {
     setInputs({...inputs, [e.target.name]: e.target.value});
     console.log(inputs)
   };
