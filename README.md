@@ -1,3 +1,9 @@
+# TravPilot
+
+TravPilot employs Large Language Models (LLMs) in conjunction with Retrieval Augmented Generation (RAG) techniques, powered by seamless integration with various Application Programming Interfaces (APIs). By utilizing these cutting-edge technologies, TravPilot dynamically generates personalized itineraries for travelers, encompassing flight arrangements, hotel accommodations, and ancillary bookings, all streamlined into a single checkout process for utmost convenience.
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
