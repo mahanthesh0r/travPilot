@@ -2,6 +2,10 @@
 
 TravPilot employs Large Language Models (LLMs) in conjunction with Retrieval Augmented Generation (RAG) techniques, powered by seamless integration with various Application Programming Interfaces (APIs). By utilizing these cutting-edge technologies, TravPilot dynamically generates personalized itineraries for travelers, encompassing flight arrangements, hotel accommodations, and ancillary bookings, all streamlined into a single checkout process for utmost convenience.
 
+# DEMO
+
+https://github.com/mahanthesh0r/travPilot/assets/36630433/d9361cd9-7bcd-4eab-9a8a-359320fb69b7
+
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
@@ -41,9 +45,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-# DEMO
 
-https://github.com/mahanthesh0r/travPilot/assets/36630433/d9361cd9-7bcd-4eab-9a8a-359320fb69b7
 
 
 
